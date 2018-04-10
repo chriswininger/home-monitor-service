@@ -12,4 +12,4 @@ This service is comprised of 5 applications:
 ### Use
 The skill is named "house elf" and contains the intent "temperature" which can be invoked through `ask house elf what is the temperature`
 
-!['https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img1.jpg?raw=true']()
+![image of sensors](https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img1.jpg?raw=true)
