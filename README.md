@@ -1,2 +1,15 @@
 # home-monitor-service
-demonstration which exposes DIY home sensors through Alexa via AWS Lambda
+service to expose sensors in the home via Alexa
+
+### Architecture
+This service is comprised of 5 applications:
+1. DS1820B_Simple_Read: Runs on a JeeNode (v6) and transmits temperature data over the serial port to a computer in the home
+2. serial-monitor: Runs on the computer with the attached JeeNode and proxies data to the AWS lambda defined in home-monitor-service-log-temp
+3. home-monitor-service-log-temp: A lambda function deployed to AWS which receives temperature data and persists it to a dynamo database
+4. home-monitor-service-get-temp: A lambda function which retrieves temperature data from the dynamo database and exposes it to Alexa
+5. An Alexa skill which is backed by the home-monitor-service-get-temp lambda
+
+### Use
+The skill is named "house elf" and contains the intent "temperature" which can be invoked through `ask house elf what is the temperature`
+
+!['https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img1.jpg?raw=true']()
