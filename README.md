@@ -15,6 +15,8 @@ The skill is named "house elf" and contains the intent "temperature" which can b
 
 ![image of sensors](https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img1.jpg?raw=true)
 
+![image of sensors](https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img2.jpg?raw=true)
+
 ### Background Resources
 * https://wiki.openenergymonitor.org/index.php/RFM12Pi_V2
 
