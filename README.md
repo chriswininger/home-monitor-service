@@ -2,12 +2,13 @@
 service to expose sensors in the home via Alexa
 
 ### Architecture
-This service is comprised of 5 applications:
-1. DS1820B_Simple_Read: Runs on a JeeNode (v6) and transmits temperature data over the serial port to a computer in the home
-2. serial-monitor: Runs on the computer with the attached JeeNode and proxies data to the AWS lambda defined in home-monitor-service-log-temp
-3. home-monitor-service-log-temp: A lambda function deployed to AWS which receives temperature data and persists it to a dynamo database
-4. home-monitor-service-get-temp: A lambda function which retrieves temperature data from the dynamo database and exposes it to Alexa
-5. An Alexa skill which is backed by the home-monitor-service-get-temp lambda
+This service is comprised of 6 applications:
+1. JeeNodeV6TemperatureBroadcasterDS1820B: Runs on a JeeNode (V6) and reads the temperature from a DS1820B digital sensor. It then transmits the data at 433mhz using an RF12 chip.
+2. RF12RadioToSerial: Runs on a JeeNode (v6). It listens at 433mhz for packets from the JeeNode running "JeeNodeV6TemperatureBroadcasterDS1820B". When it receives packets from the correct node id it converts them to json and sends them over the serial port to an internet connected device for transmission to lambda
+3. serial-monitor: Runs on the computer with the attached JeeNode and proxies data to the AWS lambda defined in home-monitor-service-log-temp
+4. home-monitor-service-log-temp: A lambda function deployed to AWS which receives temperature data and persists it to a dynamo database
+5. home-monitor-service-get-temp: A lambda function which retrieves temperature data from the dynamo database and exposes it to Alexa
+6. An Alexa skill which is backed by the home-monitor-service-get-temp lambda
 
 ### Use
 The skill is named "house elf" and contains the intent "temperature" which can be invoked through `ask house elf what is the temperature`
