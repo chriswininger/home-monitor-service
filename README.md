@@ -18,17 +18,24 @@ The skill is named "house elf" and contains the intent "temperature" which can b
 ![image of sensors](https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img2.jpg?raw=true)
 
 ### Background Resources
-* https://wiki.openenergymonitor.org/index.php/RFM12Pi_V2
+* Alexa:
 
-* https://jeelabs.net/projects/jeelib/wiki/RF12demo
+	* https://developer.amazon.com/alexa-skills-kit/tutorials?&sc_channel=SEM&sc_category=Paid&sc_content=Skill_Related&sc_funnel=Visit&sc_campaign=Evergreen&sc_segment=Devs&sc_publisher=GO&sc_country=US&sc_trackingcode=SEM01&sc_place=&sc_detail=234225542300&sc_keyword=writing%20an%20alexa%20skill&gclid=EAIaIQobChMIs_-F1vKt2gIVyLrACh11RgelEAAYASAAEgJ6DvD_BwE
+	* https://developer.amazon.com/alexa/voice-design
+	* https://developer.amazon.com/docs/devconsole/test-your-skill.html 
 
-* https://jeelabs.net/boards/7/topics/2603
+* Sensors:
+	* https://wiki.openenergymonitor.org/index.php/RFM12Pi_V2
 
-* https://github.com/jcw/jeelib/tree/master/examples/RF12/RF12demo
+	* https://jeelabs.net/projects/jeelib/wiki/RF12demo
 
-* https://forum.jeelabs.net/node/638.html
+	* https://jeelabs.net/boards/7/topics/2603
 
-* https://lowpowerlab.com/forum/moteino/data-struct-for-sendingreceiving-(solved)/
+	* https://github.com/jcw/jeelib/tree/master/examples/RF12/RF12demo
 
-* https://github.com/openenergymonitor/learn/blob/master/view/electricity-monitoring/networking/sending-data-between-nodes-rfm.md
+	* https://forum.jeelabs.net/node/638.html
+
+	* https://lowpowerlab.com/forum/moteino/data-struct-for-sendingreceiving-(solved)/
+
+	* https://github.com/openenergymonitor/learn/blob/master/view/electricity-monitoring/networking/sending-data-between-nodes-rfm.md
  
