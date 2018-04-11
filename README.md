@@ -26,3 +26,6 @@ The skill is named "house elf" and contains the intent "temperature" which can b
 * https://forum.jeelabs.net/node/638.html
 
 * https://lowpowerlab.com/forum/moteino/data-struct-for-sendingreceiving-(solved)/
+
+* https://github.com/openenergymonitor/learn/blob/master/view/electricity-monitoring/networking/sending-data-between-nodes-rfm.md
+ 

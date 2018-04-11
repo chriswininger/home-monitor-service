@@ -10,3 +10,6 @@
 [submodule "serial-monitor"]
 	path = serial-monitor
 	url = https://github.com/chriswininger/serial-monitor.git
+[submodule "RF12RadioToSerial"]
+	path = RF12RadioToSerial
+	url = git@github.com:chriswininger/RF12RadioToSerial.git
