@@ -13,3 +13,6 @@
 [submodule "RF12RadioToSerial"]
 	path = RF12RadioToSerial
 	url = git@github.com:chriswininger/RF12RadioToSerial.git
+[submodule "JeeNodeV6TemperatureBroadcasterDS1820B"]
+	path = JeeNodeV6TemperatureBroadcasterDS1820B
+	url = git@github.com:chriswininger/JeeNodeV6TemperatureBroadcasterDS1820B.git
