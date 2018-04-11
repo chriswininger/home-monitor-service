@@ -13,3 +13,16 @@ This service is comprised of 5 applications:
 The skill is named "house elf" and contains the intent "temperature" which can be invoked through `ask house elf what is the temperature`
 
 ![image of sensors](https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img1.jpg?raw=true)
+
+### Background Resources
+* https://wiki.openenergymonitor.org/index.php/RFM12Pi_V2
+
+* https://jeelabs.net/projects/jeelib/wiki/RF12demo
+
+* https://jeelabs.net/boards/7/topics/2603
+
+* https://github.com/jcw/jeelib/tree/master/examples/RF12/RF12demo
+
+* https://forum.jeelabs.net/node/638.html
+
+* https://lowpowerlab.com/forum/moteino/data-struct-for-sendingreceiving-(solved)/
