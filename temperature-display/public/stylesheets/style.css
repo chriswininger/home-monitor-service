@@ -1,0 +1,29 @@
+body {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16pt;
+  color: #00bd00;
+  background-color: black;
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sensors {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: auto auto;
+}
+
+.sensor {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  border: darkgreen 1px solid;
+  font-size: 32pt;
+  padding: 25px;
+}
+

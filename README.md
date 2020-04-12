@@ -17,6 +17,18 @@ The skill is named "house elf" and contains the intent "temperature" which can b
 
 ![image of sensors](https://github.com/chriswininger/home-monitor-service/blob/master/assets/images/sensor_img2.jpg?raw=true)
 
+### Building / Running
+
+The jeelib boards can be programmed from the Arduino IDE.
+
+* Target and Arduino Uno
+* set the serial speed to 57600
+
+### Parts
+
+* JeeNode v2: https://moderndevice.com/product/jeenode-v6-kit/
+* DS18B20 temperature sensor: https://www.adafruit.com/product/381
+
 ### Background Resources
 * Alexa:
 

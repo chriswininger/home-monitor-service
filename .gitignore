@@ -1,2 +1,5 @@
-.env
+serial-monitor/.env
 .idea
+node_modules
+*.iml
+
