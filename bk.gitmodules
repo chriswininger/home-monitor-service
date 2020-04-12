@@ -1,6 +1,3 @@
-[submodule "DS1820B_Simple_Read"]
-	path = DS1820B_Simple_Read
-	url = https://github.com/chriswininger/DS1820B_Simple_Read.git
 [submodule "home-monitor-service-get-temp"]
 	path = home-monitor-service-get-temp
 	url = https://github.com/chriswininger/home-monitor-service-get-temp.git
