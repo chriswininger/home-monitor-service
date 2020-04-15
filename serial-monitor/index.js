@@ -9,6 +9,7 @@ const SerialPort = require('serialport')
 const { throttle }  = require('lodash')
 const lambdaToPostgres = require('./processors/lambda-to-portgres')
 const localJson = require('./processors/local-json')
+const s3Processor = require('./processors/s3')
 const PORT = process.env.SERIAL_PORT
 const BAUD_RATE = 57600
 
@@ -34,11 +35,14 @@ const processData = async (data, timeReceived) => {
                     result = data
                     break
                 case PROCESSOR_LOCAL_JSON:
-                    result = await localJson(obj)
+                    await localJson(obj)
+
+                    // this should be on a separate schedule or we will get many s3 entries
+                    await s3Processor(obj)
                     break
             }
 
-            console.log(`success (${PROCESSOR_SELECTED}): ${JSON.stringify(data)}, debounce: ${DEBOUNCE_WAIT}`)
+            console.log(`success (${PROCESSOR_SELECTED}): ${JSON.stringify(obj)}, debounce: ${DEBOUNCE_WAIT}`)
         } catch (err) {
             console.warn('error: ' + err)
         }
