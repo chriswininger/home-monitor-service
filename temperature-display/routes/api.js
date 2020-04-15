@@ -10,7 +10,6 @@ router.get('/last-temperature/:sensorName', async (req, res) => {
   const fullPath = baseTempFilePath + sensorName + '.json'
   const readFileResult = await fsp.readFile(fullPath)
 
-  console.log('!!! result: ' + readFileResult)
   const jsonValue = readFileResult.toString()
 
 

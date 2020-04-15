@@ -31,7 +31,6 @@ const handlers = {
         }
         
         docClient.scan(params, function(err, data) {
-            console.log('!!! here')
             console.log(data)
             if (err) {
                 // an error occurred while trying to communicate with the db

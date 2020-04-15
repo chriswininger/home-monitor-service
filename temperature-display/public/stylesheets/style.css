@@ -15,7 +15,7 @@ body {
   width: 100%;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto;
 }
 
 .sensor {
@@ -27,3 +27,9 @@ body {
   padding: 25px;
 }
 
+.sensor-footer {
+  font-size: 10pt;
+  font-style: italic;
+
+  padding-top: 1em;
+}

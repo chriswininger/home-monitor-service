@@ -23,11 +23,9 @@
   // start the loop
   loop()
 
-  // console.log(JSON.stringify(sensorDataSets, null, 4))
-
   async function getSensorValues() {
     const tempBaseURL = '/api/v1/last-temperature/'
-    const coopSensorName = 'Chicken Coop'
+    const coopSensorName = 'Chicken_Coop'
     const coopTempReqUrl = tempBaseURL + encodeURI(coopSensorName)
 
     const currentCoopTempDataResp = await fetch(coopTempReqUrl)
@@ -50,8 +48,20 @@
 
       sensorDiv.innerText = convertCelsiusToFahrenheit(sensor.temperature) + '°'
 
+      sensorDiv.appendChild(renderSensorFooter(sensor))
+
       return sensorDiv
     })
+  }
+
+  function renderSensorFooter(sensor) {
+    const timestampDiv = document.createElement("div")
+    timestampDiv.classList.add("sensor-footer")
+    timestampDiv.classList.add("sensor-timestamp")
+
+    timestampDiv.innerText = 'Last Updated: ' + new Date(sensor.persistedAt).toLocaleTimeString()
+
+    return timestampDiv
   }
 
   function renderSensorWrapper() {

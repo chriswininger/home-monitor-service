@@ -6,7 +6,7 @@
 
 #define VERSION "0.0.1"
 #define APP_NAME "JEENODE READ TEMP AND WRITE TO SERIAL"
-#define SENSOR_NAME "Chicken Coop"
+#define SENSOR_NAME "Chicken_Coop"
 
 #define DEBUG 1
 
