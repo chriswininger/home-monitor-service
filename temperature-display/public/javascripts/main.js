@@ -1,5 +1,8 @@
 (function main(window) {
   const appRoot = document.getElementById('app-root')
+  const daysOfTheWeek = [
+    'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'
+  ]
 
   let sensorsElementContainer = renderSensorWrapper()
 
@@ -59,7 +62,10 @@
     timestampDiv.classList.add("sensor-footer")
     timestampDiv.classList.add("sensor-timestamp")
 
-    timestampDiv.innerText = 'Last Updated: ' + new Date(sensor.persistedAt).toLocaleTimeString()
+    const persistedAt = new Date(sensor.persistedAt)
+    const dayOfWeek = daysOfTheWeek[persistedAt.getDay()]
+
+    timestampDiv.innerText = `Last Updated: ${dayOfWeek} ${persistedAt.toLocaleTimeString()}`
 
     return timestampDiv
   }

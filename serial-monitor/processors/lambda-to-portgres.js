@@ -9,13 +9,17 @@ const axios = require('axios')
  *
  * @returns {*|AxiosPromise}
  */
-module.exports = function lambdaToPostgres(obj) {
+module.exports = {
+  run: (obj) => {
+    const opts = {
+      url: `${lambdaURL}?temperature=${obj.temperature}&time_received=${encodeURIComponent(timeReceived)}`,
+      method: 'post',
+      headers: {'x-api-key': process.env.API_KEY}
+    }
 
-  const opts = {
-    url: `${lambdaURL}?temperature=${obj.temperature}&time_received=${encodeURIComponent(timeReceived)}`,
-    method: 'post',
-    headers: { 'x-api-key': process.env.API_KEY}
-  }
-
-  return axios(opts)
+    return axios(opts)
+  },
+  name: 'lambda-to-postgres',
+  debounceWait: process.env.PROCESS_LAMBDA_DEBOUNCE_WAIT || 180000 // 30 minutes
 }
+

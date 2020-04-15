@@ -15,7 +15,8 @@
     "debounce": "^1.1.0",
     "dotenv": "^5.0.1",
     "lodash": "^4.17.5",
-    "serialport": "^8.0.7"
+    "serialport": "^8.0.7",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "aws-sdk": "^2.656.0",
