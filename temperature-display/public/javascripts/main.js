@@ -1,4 +1,5 @@
 (function main(window) {
+  const timeBetweenRequests = 5000
   const appRoot = document.getElementById('app-root')
   const daysOfTheWeek = [
     'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'
@@ -20,7 +21,7 @@
     appRoot.replaceChild(sensorsElementContainer, oldSensorsContainer)
 
     // run again
-    setTimeout(loop, 1000)
+    setTimeout(loop, timeBetweenRequests)
   }
 
   // start the loop
@@ -34,9 +35,20 @@
     const currentCoopTempDataResp = await fetch(coopTempReqUrl)
 
     if (currentCoopTempDataResp.status === 200) {
-      const currentCoopTempData = await currentCoopTempDataResp.json()
+      let currentCoopTempData = null
 
-      return Promise.resolve([JSON.parse(currentCoopTempData)])
+      try {
+        currentCoopTempData = await currentCoopTempDataResp.json()
+      } catch (exNetError) {
+        return Promise.reject(new Error(`Error requesting data: ${exNetError}`))
+      }
+
+      try {
+        // success
+        return Promise.resolve([JSON.parse(currentCoopTempData)])
+      } catch(ex) {
+        return Promise.reject(new Error(`Error Parsing Response: ${ex}\n\nBad Response: "${currentCoopTempData}"`))
+      }
     }
 
     return Promise.reject(new Error('failed to get values for sensors'))
