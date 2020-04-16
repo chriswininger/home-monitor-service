@@ -26,9 +26,33 @@ const port = new SerialPort(PORT, { baudRate: BAUD_RATE })
 
 port.on('error', err => console.warn('error: ' + err))
 
+/*
+  This code must handle the fact that depending on the JeeNode/Arduino the messages may not arrive over the serial port
+  as a single message.
+ */
+let buffer = ''
+let inEvent = false
 port.on('data', payload => {
-    const time = new Date(Date.now())
-    console.log(`(${time}) received message: ${payload}`)
+  const time = new Date(Date.now())
 
-    enabledProcessor.forEach(processor => processor(payload, time))
+  const payloadTrimmed = payload.toString().trim()
+  const lastChar = payloadTrimmed[payloadTrimmed.length -1]
+  const firstChar = payloadTrimmed[0]
+
+  if (firstChar == '{') {
+    inEvent = true
+    buffer = payloadTrimmed
+  } else if (inEvent) {
+    buffer += payload
+
+    if (lastChar == '}') {
+      console.log(`(${time}) received full message: "${buffer}"`)
+
+      enabledProcessor
+        .forEach(processor => processor(buffer, time))
+
+      buffer = ''
+      inEvent = false
+    }
+  }
 })

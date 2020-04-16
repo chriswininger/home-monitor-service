@@ -68,6 +68,10 @@ void loop() {
 
 
     delay(1000); // wait for all serial data to be sent
-    Serial.flush();
+    
+//    Serial.flush();
+//    // wait for transmit buffer to empty
+//    while ((UCSR0A & _BV (TXC0)) == 0)
+//    {}
     mySleep(500);
 }
