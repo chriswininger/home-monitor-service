@@ -10,15 +10,19 @@
   appRoot.appendChild(sensorsElementContainer)
 
   async function loop() {
-    const oldSensorsContainer = sensorsElementContainer
-    const sensorDataSets = await getSensorValues()
-    const sensorElements = renderSensor(sensorDataSets)
+    try {
+      const oldSensorsContainer = sensorsElementContainer
+      const sensorDataSets = await getSensorValues()
+      const sensorElements = renderSensor(sensorDataSets)
 
-    sensorsElementContainer = renderSensorWrapper()
+      sensorsElementContainer = renderSensorWrapper()
 
-    sensorElements.forEach(el => sensorsElementContainer.appendChild(el))
+      sensorElements.forEach(el => sensorsElementContainer.appendChild(el))
 
-    appRoot.replaceChild(sensorsElementContainer, oldSensorsContainer)
+      appRoot.replaceChild(sensorsElementContainer, oldSensorsContainer)
+    } catch (ex) {
+      console.error(ex)
+    }
 
     // run again
     setTimeout(loop, timeBetweenRequests)
