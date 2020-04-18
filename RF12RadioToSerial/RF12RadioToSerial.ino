@@ -18,7 +18,7 @@
 
 boolean settled = false;
 
-// stuct must match the struct defined in our sender sketch (JeeNodeV6TemperatureBroadcasterDS1820B)
+// struct must match the struct defined in our sender sketch (JeeNodeV6TemperatureBroadcasterDS1820B)
 typedef struct {
   float tempDS1820B;
 } Payload;
@@ -59,5 +59,5 @@ void writeData(float temp) {
 }
 
 float celsiusToFarenheit(float c) {
-  return c * 1.8 + 32.0;  
+  return c * 1.8 + 32.0;
 }

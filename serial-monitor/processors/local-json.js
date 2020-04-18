@@ -10,12 +10,12 @@ const dataPath = '../data'
  * @returns {void | Promise<void> | *}
  */
 module.exports = {
-  run: (payload) => {
+  run: (payload, time, messageId) => {
     const dataFileNameLatest = `latestValues-${payload.sensor}.json`
     const fullPath = path.join(dataPath, dataFileNameLatest)
 
     payload.persistedAt = new Date().toISOString()
-    console.info(`writing to file ${fullPath}`)
+    console.info(`writing to file ${fullPath} for message ${messageId}`)
 
     return fsp.writeFile(fullPath, JSON.stringify(payload, null, 4) +'\n')
   },

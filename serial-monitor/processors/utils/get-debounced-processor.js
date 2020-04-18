@@ -3,15 +3,15 @@ const { throttle }  = require('lodash')
 module.exports = getDebouncedProcessor
 
 function getDebouncedProcessor(processor) {
-  const method = async (rawData) => {
+  const method = async (rawData, time, messageId) => {
     if (isPacket(rawData)) {
       try {
-        console.log(`processing event (${processor.name}): ${JSON.stringify(rawData)}`)
+        console.log(`processing event (${processor.name}): ${messageId}`)
 
         const event = JSON.parse(rawData)
-        await processor.run(event)
+        await processor.run(event, time, messageId)
 
-        console.log(`success (${processor.name}): ${rawData}`)
+        console.log(`success (${processor.name}/${event.sensor}): ${messageId}`)
       } catch (err) {
         console.warn(`error (${processor.name}):  ${err}`)
       }

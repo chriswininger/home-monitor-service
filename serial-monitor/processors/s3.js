@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk')
-const uuidv4 = require('uuid/v4')
 
 const region = process.env.AWS_REGION
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID
@@ -10,14 +9,13 @@ const bucketName = 'home-energy-monitor-data'
 AWS.config.update({ region })
 
 module.exports = {
-  run: (payload) => {
+  run: (payload, time, messageId) => {
     const encodedName = encodeURI(payload.sensor)
-    const uuid = uuidv4()
 
     return new Promise((resolve, reject) => {
       const params = {
         Bucket: bucketName,
-        Key: `${encodedName}/${Date.now()}-${uuid}`,
+        Key: `${encodedName}/${Date.now()}-${messageId}`,
         Body: JSON.stringify(payload)
       }
 
@@ -33,7 +31,7 @@ module.exports = {
           return reject(err)
         }
 
-        console.log(`File uploaded successfully. ${data.Location}`);
+        console.log(`File uploaded successfully: ${data.Location} for messageId: ${messageId}`);
         return resolve()
       });
     })

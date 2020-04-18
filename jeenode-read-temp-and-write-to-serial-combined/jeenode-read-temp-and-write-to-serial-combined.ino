@@ -7,6 +7,7 @@
 #define VERSION "0.0.1"
 #define APP_NAME "JEENODE READ TEMP AND WRITE TO SERIAL"
 #define SENSOR_NAME "Chicken_Coop"
+#define REMOTE_NAME "Remote_Sensor"
 
 #define DEBUG 1
 
@@ -29,6 +30,8 @@ DallasTemperature sensors(&oneWire);
 
 // define structure rf12 packets
 typedef struct { float tempDS1820B; } Payload;
+
+Payload remoteData;
 
 Payload payload;
 
@@ -56,22 +59,33 @@ void loop() {
  
     payload.tempDS1820B = sensors.getTempCByIndex(0);
 
-    Serial.println();
+    writeData(payload.tempDS1820B, SET_NODE, SENSOR_NAME);
+    readTheRadio();
+}
+
+void readTheRadio() {
+  // check if we have a message ready from the rf12 board
+  if (rf12_recvDone()) {
+    byte n = rf12_len;
+
+    // check that we got the entire packet no errors
+    if (rf12_crc == 0 && (rf12_hdr & RF12_HDR_CTL) == 0) {
+      int nodeID = (rf12_hdr & 0x1F);
+
+      remoteData = *(Payload*)rf12_data;
+      writeData(payload.tempDS1820B, nodeID, REMOTE_NAME);
+    }
+  }  
+}
+
+void writeData(float temp, int nodeID, String sensorName) {
+      Serial.println();
     Serial.print("{\"temperature\": \"");
-    Serial.print(payload.tempDS1820B);
+    Serial.print(temp);
     Serial.print("\"");
     Serial.print(", \"sensor\": \"");
-    Serial.print(SENSOR_NAME);
+    Serial.print(sensorName);
     Serial.print("\"");
     Serial.print("}");
     Serial.println("");
-
-
-    delay(1000); // wait for all serial data to be sent
-    
-//    Serial.flush();
-//    // wait for transmit buffer to empty
-//    while ((UCSR0A & _BV (TXC0)) == 0)
-//    {}
-    mySleep(500);
 }
