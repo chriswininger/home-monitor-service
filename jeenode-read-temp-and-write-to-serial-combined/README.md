@@ -1,5 +1,10 @@
-# JeeNode Read Temp and Write To Serial
+# JeeNode Read Temp and Write To Serial Combined
 
-This is intended to provide for a simplified setup with a single JeeNode V6 connected to a computer over the USB port.
+This will be ran on a JeeNode V6 connected to a computer over the USB port.
 
-It reads the temperature from a DS18B20 and writes it to the serial where it can be read by other services
+Together this makes the base station.
+
+The sketch will read a temperature from the attached sensor as well as read temperatures that are being broadcast from
+other jeennodes.
+
+All temperatures will be printed over serial in a json format suitable for reading by the serial-monitor project

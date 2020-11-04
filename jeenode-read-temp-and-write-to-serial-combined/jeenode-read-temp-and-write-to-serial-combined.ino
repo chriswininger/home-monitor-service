@@ -5,9 +5,9 @@
 #include "avr/sleep.h"
 
 #define VERSION "0.0.1"
-#define APP_NAME "JEENODE READ TEMP AND WRITE TO SERIAL"
-#define SENSOR_NAME "Chicken_Coop"
-#define REMOTE_NAME "Remote_Sensor"
+#define APP_NAME "JEENODE READ TEMP AND WRITE TO SERIAL COMBINED"
+#define SENSOR_NAME "BASE_STATION"
+#define REMOTE_NAME "Remote_Sensor_"
 
 #define DEBUG 1
 
@@ -16,7 +16,7 @@
 #define FILTERSETTLETIME 5000
 #define ONE_WIRE_BUS 4
 
-#define SET_NODE 5 // Node ID for chicken coop
+#define SET_NODE 5 // Node ID for base station
 
 #define SET_GROUP 210    // wireless net group
 #define FILTERSETTLETIME 5000 //  Time (ms) to allow the filters to settle before sending data
@@ -72,14 +72,17 @@ void readTheRadio() {
     if (rf12_crc == 0 && (rf12_hdr & RF12_HDR_CTL) == 0) {
       int nodeID = (rf12_hdr & 0x1F);
 
+      String sensorName = REMOTE_NAME;
+      sensorName += nodeID;
+
       remoteData = *(Payload*)rf12_data;
-      writeData(payload.tempDS1820B, nodeID, REMOTE_NAME);
+      writeData(payload.tempDS1820B, nodeID, sensorName);
     }
   }  
 }
 
 void writeData(float temp, int nodeID, String sensorName) {
-      Serial.println();
+    Serial.println();
     Serial.print("{\"temperature\": \"");
     Serial.print(temp);
     Serial.print("\"");

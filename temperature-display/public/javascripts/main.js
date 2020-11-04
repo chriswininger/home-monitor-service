@@ -32,11 +32,9 @@
   loop()
 
   async function getSensorValues() {
-    const tempBaseURL = '/api/v1/last-temperature/'
-    const coopSensorName = 'Chicken_Coop'
-    const coopTempReqUrl = tempBaseURL + encodeURI(coopSensorName)
+    const TEMPERATURES_URL = '/api/v1/last-temperatures'
 
-    const currentCoopTempDataResp = await fetch(coopTempReqUrl)
+    const currentCoopTempDataResp = await fetch(TEMPERATURES_URL)
 
     if (currentCoopTempDataResp.status === 200) {
       let currentCoopTempData = null
@@ -48,8 +46,9 @@
       }
 
       try {
-        // success
-        return Promise.resolve([JSON.parse(currentCoopTempData)])
+        const parsedResults = JSON.parse(currentCoopTempData)
+
+        return Promise.resolve(parsedResults)
       } catch(ex) {
         return Promise.reject(new Error(`Error Parsing Response: ${ex}\n\nBad Response: "${currentCoopTempData}"`))
       }

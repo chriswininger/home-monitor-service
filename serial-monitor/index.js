@@ -16,7 +16,7 @@ const uuidv4 = require('uuid/v4')
 const PORT = process.env.SERIAL_PORT
 const BAUD_RATE = 57600
 
-const enabledProcessor = [
+const enabledProcessors = [
   getDebouncedProcessor(simpleLogProcessor),
   getDebouncedProcessor(localJsonProcessor)
   // getDebouncedProcessor(s3Processor)
@@ -71,7 +71,7 @@ function runProcessorsAndResetStates(buffer) {
 
   console.log(`(${time}) received message ${messageId}`)
 
-  enabledProcessor
+  enabledProcessors
     .forEach(processor => processor(buffer, time, messageId))
 
   buffer = ''
