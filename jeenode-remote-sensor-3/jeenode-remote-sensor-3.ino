@@ -4,12 +4,12 @@
 #include <DallasTemperature.h>
 #include "avr/sleep.h"
 
-#define APP_NAME "jeenode-remote-sensor-coop"
+#define APP_NAME "jeenode-remote-sensor-3
 #define VERSION "0.0.1"
 
 #define SET_NODE 3 // Node ID for outdoor temp
 
-#define TRANSMIT_INTERVAL 2 // interval in minutes
+#define TRANSMIT_INTERVAL 30 // interval in minutes
 
 #define DEBUG 1
 

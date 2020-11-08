@@ -80,7 +80,8 @@
     const persistedAt = new Date(sensor.persistedAt)
     const dayOfWeek = daysOfTheWeek[persistedAt.getDay()]
 
-    timestampDiv.innerText = `Last Updated: ${dayOfWeek} ${persistedAt.toLocaleTimeString()}`
+    const footerMessage = `${sensor.sensor} Last Updated: ${dayOfWeek} ${persistedAt.toLocaleTimeString()}`
+    timestampDiv.innerText = footerMessage
 
     return timestampDiv
   }

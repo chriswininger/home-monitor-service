@@ -76,7 +76,7 @@ void readTheRadio() {
       sensorName += nodeID;
 
       remoteData = *(Payload*)rf12_data;
-      writeData(payload.tempDS1820B, nodeID, sensorName);
+      writeData(remoteData.tempDS1820B, nodeID, sensorName);
     }
   }  
 }
