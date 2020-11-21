@@ -16,6 +16,8 @@ of code involved, but this README will serve to document the setup and the modul
 
 * The script periodically moves images captures to s3
 
+* git is installed to make it simple to copy this README to the pis home folder and update any support scripts I use
+
 ### transfer-images-to-s3
 
 This command takes a path to a directory for upload. There is an optional delete flag which deletes files locally once

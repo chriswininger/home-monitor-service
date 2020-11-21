@@ -1,0 +1,30 @@
+body {
+    background-color: black;
+    color: azure;
+    font-family: "Lucida Console", Monaco, monospace;
+}
+
+header {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    text-align: center;
+    border-bottom: green dotted 3px;
+    height: 70px;
+    background-color: black;
+}
+
+main {
+    width: 80%;
+    margin: 90px auto auto;
+}
+
+a:link {
+    color: azure;
+}
+
+a:visited {
+    color: lightgrey;
+}

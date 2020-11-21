@@ -84,7 +84,8 @@ async function uploadFileToS3(fullPath) {
   const params = {
     Bucket: bucketName,
     Key: s3FullPath,
-    Body: fileContent
+    Body: fileContent,
+    ACL:'public-read' // these will be publicly readable, nice for now...
   }
 
   const s3 = new AWS.S3({
