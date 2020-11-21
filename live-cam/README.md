@@ -31,6 +31,12 @@ The script requires node v14.x
 
 * An s3 bucket exists called `coop-cam-uploads`
 
+### dl.sh
+
+This is placed on the home folder of the pi and can be used to grab the latest copies of all the scripts and files here
+
+When ran it will create a symlink to this readme in the home folder
+
 ### resources: ###
 
 * https://tutorials-raspberrypi.com/raspberry-pi-security-camera-livestream-setup/
