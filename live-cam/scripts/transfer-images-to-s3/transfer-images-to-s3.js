@@ -38,7 +38,7 @@ async function main() {
     console.info(`uploaded ${file.fullPath}`)
 
     if (processedArgs.delete) {
-      await fs.rm(file.fullPath)
+      await fs.unlink(file.fullPath)
       console.log(`deleted file ${file.fullPath}`)
     }
   }

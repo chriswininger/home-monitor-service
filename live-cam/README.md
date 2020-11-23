@@ -46,4 +46,14 @@ When ran it will create a symlink to this readme in the home folder
 * http://lavrsen.dk/foswiki/bin/view/Motion/WebHome
 
 * https://motion-project.github.io/
- 
+
+
+### Installing node v14.x on an older pi
+
+nvm install is super super slow (you have to max out the swap and it's been running for days)
+
+binaries are no longer produced for this version of arm "officially"  but can be found here:
+
+`wget https://unofficial-builds.nodejs.org/download/release/v14.10.0/node-v14.10.0-linux-armv6l.tar.gz`
+
+thx to: https://gist.github.com/davps/6c6e0ba59d023a9e3963cea4ad0fb516
