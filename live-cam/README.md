@@ -10,13 +10,22 @@ of code involved, but this README will serve to document the setup and the modul
     * Motion exposes a web service on ports 8080 and 8081 which live stream the attached camera, currently in our
       chicken run :-)
 
-* The configuration files are: /etc/motion/motion.conf and /etc/default/motion
+* The configuration files are: /etc/motion/motion.conf and `/etc/default/motion`
 
-* Images captured based on motion detect are stored at /var/lib/motion
+* Images captured based on motion detect are stored at `/var/lib/motion`
 
 * The script periodically moves images captures to s3
 
 * git is installed to make it simple to copy this README to the pis home folder and update any support scripts I use
+
+* To get logs from cron tasks you'll need to `sudo apt-get install postfix`
+
+    * https://cronitor.io/cron-reference/no-mta-installed-discarding-output
+    
+    * to see the output you can `tail -f /var/mail/root`
+    * also check `/var/logs/syslog`
+
+* Sample cron entry: `*/15 * * * * AWS_ACCESS_KEY_ID=XXX AWS_ACCESS_KEY_SECRET=XXX /usr/local/bin/node /home/pi/live-cam/scripts/transfer-images-to-s3/transfer-images-to-s3.js /var/lib/motion --delete`
 
 ### transfer-images-to-s3
 

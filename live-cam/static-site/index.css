@@ -28,3 +28,40 @@ a:link {
 a:visited {
     color: lightgrey;
 }
+
+.preview-image-image {
+    border: azure solid 1px;
+}
+
+.preview-image-container {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: black;
+    border: azure solid 1px;
+}
+
+.preview-image-top-bar {
+    height: 1em;
+    width: 100%;
+    text-align: right;
+    border-bottom: azure 1px solid;
+}
+
+.preview-image-top-bar-x {
+    display: inline-block;
+    text-align: right;
+    font-weight: bold;
+    border-left: azure 1px solid;
+    padding-left: 1em;
+    padding-right: 1em;
+    cursor: pointer;
+}
+
+.folder-header {
+    background: azure;
+    color: black;
+    font-weight: bold;
+    font-size: larger;
+}
