@@ -10,7 +10,7 @@ async function main() {
   const opt = {
     mode: 'cors'
   }
-  const itemsXML = await fetch('http://coop-cam-uploads.s3.amazonaws.com/?list-type=2', opt)
+  const itemsXML = await fetch('http://coop-cam-uploads.s3.amazonaws.com?list-type=2&start-after=2020-10-30/147-20201130120319-18.jpg', opt)
     .then(resp => {
       return resp.text()
     })
@@ -21,14 +21,15 @@ async function main() {
   console.log(itemsXML)
   console.log('---------------')
 
-  const parser = new DOMParser()
-  const xmlDoc = parser.parseFromString(itemsXML,"text/xml")
-  const entries = xmlDoc.getElementsByTagName('ListBucketResult')
-  const contents = entries[0].getElementsByTagName('Contents')
-
+  // const parser = new DOMParser()
+  // const xmlDoc = parser.parseFromString(itemsXML,"text/xml")
+  // const entries = xmlDoc.getElementsByTagName('ListBucketResult')
+  // const contents = entries[0].getElementsByTagName('Contents')
+  //
   mainEl = document.getElementById(ID)
-
-  const motionCaptures = getListOfValidMotionCapturesFromXmlContents(contents)
+  //
+  // const motionCaptures = getListOfValidMotionCapturesFromXmlContents(contents)
+  const motionCaptures = await getListOfCaptures()
   const groupedByFolders = groupByFolder(motionCaptures)
 
   console.log(JSON.stringify(groupedByFolders, null, 4))
@@ -99,20 +100,27 @@ function getListOfValidMotionCapturesFromXmlContents(contents) {
 
     const keyText = content.getElementsByTagName('Key')[0].textContent
 
-    const url = `${BASE_URL}${keyText}`
-
-    const folder = keyText.split('/')[0]
-
     if (isJpeg(keyText)) {
+
+      const url = `${BASE_URL}${keyText}`
+
+      const folder = keyText.split('/')[0]
+
+      const extractedDateTime = getTimeFromKey(keyText)
+
+
       keys.push({
         keyText,
         url,
-        folder
+        folder,
+        extractedDateTime
       })
     }
   }
 
-  return keys.sort()
+  return keys.sort((motionCaptureA, motionCaptureB) => {
+    return motionCaptureB.extractedDateTime - motionCaptureA.extractedDateTime
+  })
 }
 
 function isJpeg(key) {
@@ -121,6 +129,9 @@ function isJpeg(key) {
 
 function buildLink(motionCapture) {
   const keyText = motionCapture.keyText
+  const timeStampText = motionCapture.extractedDateTime ?
+    motionCapture.extractedDateTime.toLocaleTimeString() :
+    '[INVALID DATE]'
 
   const onClick = (e) => {
     e.preventDefault();
@@ -129,7 +140,7 @@ function buildLink(motionCapture) {
 
   const link = document.createElement('a')
   link.setAttribute('href', motionCapture.url)
-  link.text = keyText + ' -- ' + getTimeFromKey(keyText)
+  link.text = keyText + ' -- ' + timeStampText
   link.onclick = onClick
 
   return link
@@ -204,10 +215,94 @@ function getTimeFromKey(key) {
 
     const dateString = `${year}-${month}-${date} ${hour}:${min}:${second}`
 
-    return new Date(dateString).toString()
+    return new Date(dateString)
   } else {
-    return '[INVALID DATE]'
+    return null
   }
+}
+
+async function getListOfCaptures() {
+  const responses = await getXmlUntilNotTruncated()
+
+  let allMotionCaptures = []
+
+  for (let i = 0; i < responses.length; i++) {
+    const respXml = responses[i]
+
+    const contents = getContents(respXml)
+
+    allMotionCaptures = [
+      ...allMotionCaptures,
+      ...getListOfValidMotionCapturesFromXmlContents(contents)
+    ]
+  }
+
+  return allMotionCaptures
+}
+
+async function getXmlUntilNotTruncated() {
+  let xml = await getXml()
+
+  const allResponses = [xml]
+
+  while (isTruncated(xml)) {
+    const lastKey = findLastKey(xml)
+
+    xml = await getXml(lastKey)
+    allResponses.push(xml)
+  }
+
+  return allResponses
+}
+
+async function getXml(startAfter) {
+  const baseUrl = 'http://coop-cam-uploads.s3.amazonaws.com?list-type=2'
+  const queryParams = '&start-after='
+
+  const opt = {
+    mode: 'cors'
+  }
+
+  let url = baseUrl
+  if (startAfter) {
+    url += queryParams + startAfter
+  }
+
+  return fetch(url, opt)
+    .then(resp => {
+      return resp.text()
+    })
+    .catch(error => console.error(error))
+}
+
+function isTruncated(xml) {
+  const entries = getXmlDocBucketResults(xml)
+  const truncationKey = entries[0].getElementsByTagName('IsTruncated')[0].textContent
+
+  return truncationKey === 'true'
+}
+
+function findLastKey(xml) {
+  const entries = getXmlDocBucketResults(xml)
+  const contents = entries[0].getElementsByTagName('Contents')
+
+  const lastNdx = contents.length - 1
+
+  const lastEntry = contents[lastNdx]
+
+  return lastEntry.getElementsByTagName('Key')[0].textContent
+}
+
+function getXmlDocBucketResults(xml) {
+  const parser = new DOMParser()
+  const xmlDoc = parser.parseFromString(xml,"text/xml")
+
+  return xmlDoc.getElementsByTagName('ListBucketResult')
+}
+
+function getContents(xml) {
+  const entries = getXmlDocBucketResults(xml)
+  return entries[0].getElementsByTagName('Contents')
 }
 
 function isValidCaptureWithStamp(key) {
