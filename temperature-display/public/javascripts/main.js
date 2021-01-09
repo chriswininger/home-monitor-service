@@ -1,9 +1,6 @@
 (function main(window) {
   const timeBetweenRequests = 5000
   const appRoot = document.getElementById('app-root')
-  const daysOfTheWeek = [
-    'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'
-  ]
 
   let sensorsElementContainer = renderSensorWrapper()
 
@@ -78,7 +75,7 @@
     timestampDiv.classList.add("sensor-timestamp")
 
     const persistedAt = new Date(sensor.persistedAt)
-    const dayOfWeek = daysOfTheWeek[persistedAt.getDay()]
+    const dayOfWeek = getDayOfTheWeek(persistedAt)
 
     const footerMessage = `${sensor.sensor} Last Updated: ${dayOfWeek} ${persistedAt.toLocaleTimeString()}`
     timestampDiv.innerText = footerMessage
@@ -95,6 +92,14 @@
 
   function convertCelsiusToFahrenheit(tempCelsius) {
     return ((tempCelsius * 9/5) + 32).toFixed(1)
+  }
+
+  function getDayOfTheWeek(dtTime) {
+    const daysOfTheWeek = [
+      'EMPTY', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'
+    ]
+
+    return daysOfTheWeek[dtTime.getDay()]
   }
 })(window)
 
