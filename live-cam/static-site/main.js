@@ -4,6 +4,8 @@ const BASE_URL = 'http://coop-cam-uploads.s3-website-us-east-1.amazonaws.com/'
 let mainEl
 let imagePreview
 
+let orderedListOfImageLinks = [];
+
 main()
 
 async function main() {
@@ -60,11 +62,12 @@ function buildMotionCaptureList(capturesInFolder)
   list.className = 'folder-list'
 
   capturesInFolder.forEach(motionCapture => {
-    const link = buildLink(motionCapture)
 
-    const container = buildLinkContainer(link)
+    const link = buildLink(motionCapture);
 
-    list.appendChild(container)
+    const container = buildLinkContainer(link);
+
+    list.appendChild(container);
   })
 
   return list
@@ -88,6 +91,7 @@ function groupByFolder(motionCaptures) {
 
     const folder = foldersByKey[folderKey]
     folder.motionCaptures.push(capture)
+    orderedListOfImageLinks.push(capture.url)
   })
 
   return folderList
@@ -139,7 +143,7 @@ function buildLink(motionCapture) {
   }
 
   const link = document.createElement('a')
-  link.setAttribute('href', motionCapture.url)
+  link.setAttribute('href', motionCapture.url);
   link.text = keyText + ' -- ' + timeStampText
   link.onclick = onClick
 
@@ -174,6 +178,7 @@ function buildImagePreview(imgSrc) {
   imgContainer.id = 'preview-image'
 
   const imgContainerTopBar = buildImageContainerTopBar()
+  const imgContainerBottomBar = buildImageContainerBottomBar(imgSrc);
 
   const img = document.createElement('img')
   img.setAttribute('src', imgSrc)
@@ -181,6 +186,7 @@ function buildImagePreview(imgSrc) {
 
   imgContainer.appendChild(imgContainerTopBar)
   imgContainer.appendChild(img)
+  imgContainer.appendChild(imgContainerBottomBar);
 
   return imgContainer
 }
@@ -192,13 +198,51 @@ function buildImageContainerTopBar() {
   imgContainerTopBar.className = 'preview-image-top-bar'
 
   const imgContainerTopBarX = document.createElement('div')
-  imgContainerTopBarX.className = 'preview-image-top-bar-x'
+  imgContainerTopBarX.className = 'preview-image-top-bar-x preview-image-button'
   imgContainerTopBarX.textContent = '-X-'
   imgContainerTopBarX.onclick = onCloseClick
 
   imgContainerTopBar.appendChild(imgContainerTopBarX)
 
   return imgContainerTopBar
+}
+
+function buildImageContainerBottomBar(imgSrc)  {
+  const currentNdx = orderedListOfImageLinks.findIndex((entrySrc) => entrySrc === imgSrc);
+  const previousNdx = currentNdx - 1;
+  const nextNdx = currentNdx + 1;
+
+  const onPreviousClick = () => {
+    if (previousNdx >= 0) {
+      const previousImage = orderedListOfImageLinks[previousNdx];
+      showImagePreview(previousImage);
+    }
+  };
+
+  const onNextClick = () => {
+    if (nextNdx < orderedListOfImageLinks.length) {
+      const nextImage = orderedListOfImageLinks[nextNdx];
+      showImagePreview(nextImage);
+    }
+  };
+
+  const imgContainerBottomBar = document.createElement('div');
+  imgContainerBottomBar.className = 'preview-image-bottom-bar';
+
+  const imgContainerPrevious = document.createElement('div');
+  imgContainerPrevious.className = 'preview-image-previous-button preview-image-button';
+  imgContainerPrevious.textContent = '<<';
+  imgContainerPrevious.onclick = onPreviousClick;
+
+  const imgContainerNext = document.createElement('div');
+  imgContainerNext.className = 'preview-image-next-button preview-image-button';
+  imgContainerNext.textContent = '>>';
+  imgContainerNext.onclick = onNextClick;
+
+  imgContainerBottomBar.appendChild(imgContainerPrevious);
+  imgContainerBottomBar.appendChild(imgContainerNext);
+
+  return imgContainerBottomBar;
 }
 
 function getTimeFromKey(key) {

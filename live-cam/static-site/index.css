@@ -43,7 +43,6 @@ a:visited {
 }
 
 .preview-image-top-bar {
-    height: 1em;
     width: 100%;
     text-align: right;
     border-bottom: azure 1px solid;
@@ -64,4 +63,23 @@ a:visited {
     color: black;
     font-weight: bold;
     font-size: larger;
+}
+
+.preview-image-bottom-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.preview-image-next-button {
+    text-align: right;
+}
+
+.preview-image-button {
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+.preview-image-button:hover {
+    cursor: pointer;
 }
