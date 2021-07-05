@@ -70,7 +70,6 @@ async function getRecentJpegFiles() {
 }
 
 async function uploadFileToS3(fullPath) {
-  const currentDate = new Date()
   const year = currentDate.getFullYear()
   const month = `${currentDate.getMonth() + 1}`.padStart(2,'0')
   const date = `${currentDate.getDate()}`.padStart(2, '0')
@@ -85,7 +84,8 @@ async function uploadFileToS3(fullPath) {
     Bucket: bucketName,
     Key: s3FullPath,
     Body: fileContent,
-    ACL:'public-read' // these will be publicly readable, nice for now...
+    ACL:'public-read', // these will be publicly readable, nice for now...
+    Tagging: 'shouldExpire=true' // used by lifecycle rule to know which files expire
   }
 
   const s3 = new AWS.S3({
