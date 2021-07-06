@@ -70,6 +70,7 @@ async function getRecentJpegFiles() {
 }
 
 async function uploadFileToS3(fullPath) {
+  const currentDate = new Date()
   const year = currentDate.getFullYear()
   const month = `${currentDate.getMonth() + 1}`.padStart(2,'0')
   const date = `${currentDate.getDate()}`.padStart(2, '0')
