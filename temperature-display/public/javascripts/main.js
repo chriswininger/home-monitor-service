@@ -61,12 +61,21 @@
       sensorDiv.classList.add('sensor')
       sensorDiv.classList.add('temp')
 
-      sensorDiv.innerText = convertCelsiusToFahrenheit(sensor.temperature) + '°'
+      if (isHumiditySensor(sensor)) {
+        sensorDiv.innerText = sensor.temperature + '°, ' + sensor.humidity + '% H'
+
+      } else {
+        sensorDiv.innerText = convertCelsiusToFahrenheit(sensor.temperature) + '°'
+      }
 
       sensorDiv.appendChild(renderSensorFooter(sensor))
 
       return sensorDiv
     })
+  }
+
+  function isHumiditySensor(sensor) {
+    return sensor.sensor === 'remoteHumidity';
   }
 
   function renderSensorFooter(sensor) {

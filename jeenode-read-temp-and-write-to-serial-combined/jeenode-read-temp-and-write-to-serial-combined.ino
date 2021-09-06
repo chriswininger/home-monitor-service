@@ -31,8 +31,13 @@ DallasTemperature sensors(&oneWire);
 // define structure rf12 packets
 typedef struct { float tempDS1820B; } Payload;
 
-Payload remoteData;
+#define HUMIDITY_SENSOR_NODE_1 6
 
+// define struct for packets that indluce humidity data
+typedef struct { float temperature; float humidity; } PayloadWithHumditiy;
+
+PayloadWithHumditiy payloadWithHumidity;
+Payload remoteData;
 Payload payload;
 
 void setup() {
@@ -75,8 +80,19 @@ void readTheRadio() {
       String sensorName = REMOTE_NAME;
       sensorName += nodeID;
 
-      remoteData = *(Payload*)rf12_data;
-      writeData(remoteData.tempDS1820B, nodeID, sensorName);
+      if (nodeID == HUMIDITY_SENSOR_NODE_1) {
+        // this is a humidity sensor
+        payloadWithHumidity = *(PayloadWithHumditiy*)rf12_data;
+        writeDataWithHumidity(
+          payloadWithHumidity.temperature,
+          payloadWithHumidity.humidity,
+          nodeID,
+          "remoteHumidity");
+      } else {
+        // normal kinde
+        remoteData = *(Payload*)rf12_data;
+        writeData(remoteData.tempDS1820B, nodeID, sensorName);
+      }
     }
   }  
 }
@@ -89,6 +105,26 @@ void writeData(float temp, int nodeID, String sensorName) {
     Serial.print(", \"sensor\": \"");
     Serial.print(sensorName);
     Serial.print("\"");
+    Serial.print("}");
+    Serial.println("");
+}
+
+
+
+void writeDataWithHumidity(float temp, float humidity, int nodeID, String sensorName) {
+    Serial.println();
+    Serial.print("{\"temperature\": \"");
+    Serial.print(temp);
+    Serial.print("\"");
+    
+    Serial.print(", \"humidity\": \"");
+    Serial.print(humidity);
+    Serial.print("\"");
+
+    Serial.print(", \"sensor\": \"");
+    Serial.print(sensorName);
+    Serial.print("\"");
+    
     Serial.print("}");
     Serial.println("");
 }

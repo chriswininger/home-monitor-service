@@ -19,6 +19,8 @@ const REGION = 'us-east-1'
 const ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
 const SECRET_ACCESS_KEY = process.env.AWS_ACCESS_KEY_SECRET
 
+const TIME_EXCLUSION_CUT_OFF_HOUR = 19
+
 AWS.config.update({ REGION })
 
 main()
@@ -34,8 +36,12 @@ async function main() {
   console.info(`found "${matchingFiles.length}" files to upload`)
 
   for (const file of matchingFiles) {
-    await uploadFileToS3(file.fullPath)
-    console.info(`uploaded ${file.fullPath}`)
+    if (isUploadIncluded()) {
+      await uploadFileToS3(file.fullPath)
+      console.info(`uploaded ${file.fullPath}`)
+    } else {
+      console.info(`skipping upload due to time of night exclusion ${file.fullPath}`)
+    }
 
     if (processedArgs.delete) {
       await fs.unlink(file.fullPath)
@@ -105,22 +111,37 @@ async function uploadFileToS3(fullPath) {
   })
 }
 
+// TODO (CAW) -- It would be better if this was based on created_at of file rather than current time on server
+function isUploadIncluded() {
+  if (!processedArgs.isTimeExclusionFlagSet) {
+    return true
+  }
+
+  const currentTime = Date.now()
+
+  return currentTime.getHours() < TIME_EXCLUSION_CUT_OFF_HOUR
+}
+
 function processArgs(args) {
   const isDeleteFlag = (arg) => arg === '--delete'
+  const isTimeExclusionFlag = (arg) => arg === '--time-exclusion'
 
-  if (args.length > 2 || args.length < 1) {
+  if (args.length > 3 || args.length < 1) {
     console.error('invalid args')
     printUsage()
     process.exit(1)
   }
 
   const processedArgs = {
-    delete: false
+    delete: false,
+    isTimeExclusionFlagSet: false,
   }
 
   args.forEach(arg => {
     if (isDeleteFlag(arg)) {
       processedArgs.delete = true
+    } else if (isTimeExclusionFlag(arg)) {
+      processedArgs.isTimeExclusionFlagSet = true
     } else {
       processedArgs.directory = path.resolve(arg)
     }
@@ -130,7 +151,12 @@ function processArgs(args) {
 }
 
 function printUsage() {
-  console.info('usage -> node ./transfer-images-to-s3 [--delete] pathToFolder')
+  console.info('usage -> node ./transfer-images-to-s3 [--delete] [--time-exclusion] pathToFolder')
+  console.info(`
+    --delete: deletes images once uploaded
+    --time-exclusion: excludes images after dark (7:00 PM EST). When used in conjuction with delete this means they will
+      be deleted and not uploaded
+  `)
 }
 
 function isJpeg(filePath) {
