@@ -4,7 +4,7 @@ Live Cam
 This module captures information about the pi/web cam solution I am using for remote monitoring. There is a not a lot
 of code involved, but this README will serve to document the setup and the module will contain any related scripts.
 
-### Setup: ###
+# Setup: 
 
 * Motion (4.0) is installed
     * Motion exposes a web service on ports 8080 and 8081 which live stream the attached camera, currently in our
@@ -18,16 +18,36 @@ of code involved, but this README will serve to document the setup and the modul
 
 * git is installed to make it simple to copy this README to the pis home folder and update any support scripts I use
 
-* To get logs from cron tasks you'll need to `sudo apt-get install postfix`
+## Postfix for Cronjob outoutput
 
-    * https://cronitor.io/cron-reference/no-mta-installed-discarding-output
-    
-    * to see the output you can `tail -f /var/mail/root`
-    * also check `/var/logs/syslog`
+To get logs from cron tasks you'll need to `sudo apt-get install postfix`
 
+* https://cronitor.io/cron-reference/no-mta-installed-discarding-output    
+* to see the output you can `tail -f /var/mail/root`
+* also check `/var/logs/syslog`
 * Sample cron entry: `*/15 * * * * AWS_ACCESS_KEY_ID=XXX AWS_ACCESS_KEY_SECRET=XXX /usr/local/bin/node /home/pi/live-cam/scripts/transfer-images-to-s3/transfer-images-to-s3.js /var/lib/motion --delete`
 
-### transfer-images-to-s3
+### Debuging Postfix
+
+test with: `echo "test" | mail root`
+
+check for errors: `sudo tail -n 40 /var/log/mail.log`
+
+in the past I fixed by doing:
+
+```
+sudo apt-get install --reinstall postfix
+sudo dpkg-reconfigure postfix
+```
+
+A past issue I saw was erros like this in syslogs
+
+```
+Aug 14 11:45:02 pi-cam-2 cron[3189]: sendmail: fatal: open /etc/postfix/main.cf: No such file or directory
+Aug 14 11:45:02 pi-cam-2 postfix/sendmail[3189]: fatal: open /etc/postfix/main.cf: No such file or directory
+```
+
+# transfer-images-to-s3
 
 This command takes a path to a directory for upload. There is an optional delete flag which deletes files locally once
 uploaded. Be careful with --delete when testing.
@@ -42,13 +62,13 @@ The script requires node v14.x
 
 * An s3 bucket exists called `coop-cam-uploads`
 
-### dl.sh
+# dl.sh
 
 This is placed on the home folder of the pi and can be used to grab the latest copies of all the scripts and files here
 
 When ran it will create a symlink to this readme in the home folder
 
-### resources: ###
+# resources: 
 
 * https://tutorials-raspberrypi.com/raspberry-pi-security-camera-livestream-setup/
 
@@ -57,7 +77,7 @@ When ran it will create a symlink to this readme in the home folder
 * https://motion-project.github.io/
 
 
-### Installing node v14.x on an older pi
+# Installing node v14.x on an older pi
 
 nvm install is super super slow (you have to max out the swap and it's been running for days)
 
